@@ -7,5 +7,5 @@ import com.radauer.mathrix.Mathrix;
  */
 public interface Task {
 
-    public void calc(Mathrix mathrix);
+    void calc(Mathrix mathrix);
 }

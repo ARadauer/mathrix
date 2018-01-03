@@ -1,8 +1,6 @@
 package com.radauer.mathrix.tasks;
 
-import com.radauer.mathrix.Group;
-import com.radauer.mathrix.Mathrix;
-import com.radauer.mathrix.Position;
+import com.radauer.mathrix.*;
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
@@ -10,24 +8,24 @@ import org.apache.commons.lang3.ArrayUtils;
  */
 public class CopyTask implements Task {
 
-    private String[] sourceGroupCodes;
-    private String[] sourceRowCodes;
-    private String targetGroupCode;
+    private GroupKey[] sourceGroupKeys;
+    private RowType[] sourceRowType;
+    private GroupKey targetGroupKey;
 
-    public CopyTask(String[] sourceGroupCodes, String[] sourceRowCodes, String targetGroupCode) {
-        this.sourceGroupCodes = sourceGroupCodes;
-        this.sourceRowCodes = sourceRowCodes;
-        this.targetGroupCode = targetGroupCode;
+    public CopyTask(GroupKey[] sourceGroupKeys, RowType[] sourceRowType, GroupKey targetGroupKey) {
+        this.sourceGroupKeys = sourceGroupKeys;
+        this.sourceRowType = sourceRowType;
+        this.targetGroupKey = targetGroupKey;
     }
 
     @Override
     public void calc(Mathrix mathrix) {
-        for (String sourceGroupCode : sourceGroupCodes) {
-            Group group = mathrix.getGroup(sourceGroupCode);
+        for (GroupKey sourceGroupKey : sourceGroupKeys) {
+            Group group = mathrix.getGroup(sourceGroupKey);
             group.getPositions()
-                    .filter(p -> ArrayUtils.contains(sourceRowCodes, p.getRowCode()))
+                    .filter(p -> ArrayUtils.contains(sourceRowType, p.getRowKey().getRowType()))
                     .filter(p -> p.getValue() != null)
-                    .forEach((Position p) -> mathrix.add(targetGroupCode, p.getRowCode(), p.getValue()));
+                    .forEach((Position p) -> mathrix.add(targetGroupKey, p.getRowKey(), p.getValue()));
         }
 
 

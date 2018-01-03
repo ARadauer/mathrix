@@ -8,28 +8,28 @@ import java.util.Map;
  */
 public class Row {
 
-    private String rowCode;
+    private RowKey rowKey;
 
-    public Row(String rowCode) {
-        this.rowCode = rowCode;
+    public Row(RowKey rowKey) {
+        this.rowKey = rowKey;
     }
 
-    private Map<String, Position> positions = new HashMap<>();
+    private Map<GroupKey, Position> positions = new HashMap<>();
 
     public void insert(Position position) {
-        Position existing = positions.get(position.getGroupCode());
+        Position existing = positions.get(position.getGroupKey());
         if (existing != null) {
             throw new IllegalArgumentException(position+" allready exists");
         } else {
-            positions.put(position.getGroupCode(), position);
+            positions.put(position.getGroupKey(), position);
         }
     }
 
-    public Position getPosition(String groupCode){
-        return positions.get(groupCode);
+    public Position getPosition(GroupKey groupKey) {
+        return positions.get(groupKey);
     }
 
-    public String getRowCode() {
-        return rowCode;
+    public RowKey getRowKey() {
+        return rowKey;
     }
 }

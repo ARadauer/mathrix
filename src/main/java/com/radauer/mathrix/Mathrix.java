@@ -12,15 +12,16 @@ import java.util.Set;
 public class Mathrix {
 
 
-    private Map<String, Row> rows = new HashMap<>();
-    private Map<String, Group> groups = new HashMap<>();
-    private Set<String> groupCodes = new LinkedHashSet<>();
-    private Set<String> rowCodes = new LinkedHashSet <>();
+    private int size = 0;
+    private Map<RowKey, Row> rows = new HashMap<>();
+    private Map<GroupKey, Group> groups = new HashMap<>();
+    private Set<GroupKey> groupKeys = new LinkedHashSet<>();
+    private Set<RowKey> rowKeys = new LinkedHashSet<>();
 
-    public void add(String groupCode, String rowCode, BigDecimal value){
-        Position position = getPosition(groupCode, rowCode);
-        if(position == null){
-            position = new Position(groupCode, rowCode, value);
+    public void add(GroupKey groupKey, RowKey rowKey, BigDecimal value) {
+        Position position = getPosition(groupKey, rowKey);
+        if (position == null) {
+            position = new Position(groupKey, rowKey, value);
             insert(position);
             return;
         }
@@ -28,33 +29,34 @@ public class Mathrix {
     }
 
     public void insert(Position position) {
-        Row row = rows.get(position.getRowCode());
+        Row row = rows.get(position.getRowKey());
         if (row == null) {
-            row = new Row(position.getRowCode());
-            rows.put(row.getRowCode(), row);
-            rowCodes.add(row.getRowCode());
+            row = new Row(position.getRowKey());
+            rows.put(row.getRowKey(), row);
+            rowKeys.add(row.getRowKey());
         }
         row.insert(position);
 
-        Group group = groups.get(position.getGroupCode());
+        Group group = groups.get(position.getGroupKey());
         if (group == null) {
-            group = new Group(position.getGroupCode());
-            groupCodes.add(position.getGroupCode());
-            groups.put(group.getGroupCode(), group);
+            group = new Group(position.getGroupKey());
+            groupKeys.add(position.getGroupKey());
+            groups.put(group.getGroupKey(), group);
         }
         group.insert(position);
+        size++;
     }
 
-    public Position getPosition(String groupCode, String rowCode) {
-        Row row = rows.get(rowCode);
+    public Position getPosition(GroupKey groupKey, RowKey rowKey) {
+        Row row = rows.get(rowKey);
         if (row == null) {
             return null;
         }
-        return row.getPosition(groupCode);
+        return row.getPosition(groupKey);
     }
 
-    public Group getGroup(String groupCode){
-        return groups.get(groupCode);
+    public Group getGroup(GroupKey groupKey) {
+        return groups.get(groupKey);
     }
 
     @Override
@@ -63,21 +65,27 @@ public class Mathrix {
         StringBuilder buf = new StringBuilder();
         buf.append(String.format(SEP, ""));
 
-        for (String groupCode : groupCodes) {
-            buf.append(String.format(SEP, groupCode));
+        for (GroupKey groupKey : groupKeys) {
+            buf.append(String.format(SEP, groupKey));
         }
         buf.append("\n");
-        for (String rowCode : rowCodes) {
-            Row row = rows.get(rowCode);
-            buf.append(String.format(SEP, row.getRowCode()));
-            for (String groupCode : groupCodes) {
-                Position position = row.getPosition(groupCode);
+        for (RowKey rowKey : rowKeys) {
+            Row row = rows.get(rowKey);
+            buf.append(String.format(SEP, row.getRowKey()));
+            for (GroupKey groupKey : groupKeys) {
+                Position position = row.getPosition(groupKey);
                 buf.append(String.format(SEP, position == null ? "- " : position));
             }
             buf.append("\n");
         }
         return buf.toString();
     }
+
+
+    public int getSize() {
+        return size;
+    }
+
 
     private static String SEP = "%10s";
 }

@@ -9,31 +9,31 @@ import java.util.stream.Stream;
  */
 public class Group {
 
-    private Map<String, Position> positions = new HashMap<>();
-    private String groupCode;
+    private Map<RowKey, Position> positions = new HashMap<>();
+    private GroupKey groupKey;
 
-    public Group(String groupCode) {
-        this.groupCode = groupCode;
+    public Group(GroupKey groupKey) {
+        this.groupKey = groupKey;
     }
 
     public void insert(Position position) {
-        Position existing = positions.get(position.getRowCode());
+        Position existing = positions.get(position.getRowKey());
         if (existing != null) {
-            throw new IllegalArgumentException(position+" allready exists");
+            throw new IllegalArgumentException(position + " allready exists");
         } else {
-            positions.put(position.getRowCode(), position);
+            positions.put(position.getRowKey(), position);
         }
     }
 
-    public Position getPosition(String rowCode) {
-        return positions.get(rowCode);
+    public Position getPosition(RowKey rowKey) {
+        return positions.get(rowKey);
     }
 
-    public Stream<Position> getPositions(){
+    public Stream<Position> getPositions() {
         return positions.values().stream();
     }
 
-    public String getGroupCode() {
-        return groupCode;
+    public GroupKey getGroupKey() {
+        return groupKey;
     }
 }

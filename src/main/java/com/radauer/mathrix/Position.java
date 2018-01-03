@@ -7,23 +7,27 @@ import java.math.BigDecimal;
  */
 public class Position {
 
-    private final String groupCode;
-    private final String rowCode;
+    private final GroupKey groupKey;
+    private final RowKey rowKey;
 
     private BigDecimal value;
 
-    public Position(String groupCode, String rowCode, BigDecimal value) {
-        this.groupCode = groupCode;
-        this.rowCode = rowCode;
+    public Position(GroupKey groupKey, RowKey rowKey, BigDecimal value) {
+        this.groupKey = groupKey;
+        this.rowKey = rowKey;
         this.value = value;
     }
 
-    public String getGroupCode() {
-        return groupCode;
+    public GroupKey getGroupKey() {
+        return groupKey;
     }
 
-    public String getRowCode() {
-        return rowCode;
+    public void setValue(BigDecimal value) {
+        this.value = value;
+    }
+
+    public RowKey getRowKey() {
+        return rowKey;
     }
 
     public BigDecimal getValue() {
