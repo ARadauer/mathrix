@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * Created by Andreas on 03.01.2018.
+ * Cell of the Mathrix table
  */
 public class Position implements Serializable
 {
