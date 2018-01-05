@@ -31,7 +31,6 @@ public class MathrixTest
         Color        10        12
         Option        5         7*/
         createMathrix();
-        System.out.println(mat);
 
         testValue("EK", "Model", "100", mat);
         testValue("EK", "Color", "10", mat);
