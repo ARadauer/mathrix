@@ -8,9 +8,19 @@
     <artifactId>matrix</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <name>Mathrix - a Simple Calculation Engine</name>
+
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+
+        <distributionManagement.inhouse.url>http://repweb01e.szg.porsche.co.at/archiva/repository/inhouse
+        </distributionManagement.inhouse.url>
+        <distributionManagement.snapshots.url>http://repweb01e.szg.porsche.co.at/archiva/repository/inhouse_snapshot
+        </distributionManagement.snapshots.url>
+        <java.version>1.7</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
     </properties>
     <dependencies>
         <dependency>
@@ -30,6 +40,17 @@
         </dependency>
 
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>inhouse</id>
+            <url>${distributionManagement.inhouse.url}</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>${distributionManagement.snapshots.url}</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 
 </project>

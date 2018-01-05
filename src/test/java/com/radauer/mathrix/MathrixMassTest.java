@@ -17,12 +17,12 @@ public class MathrixMassTest
 
     private Mathrix mat;
 
-    private static int TEST_RUNS = 1000;
+    private static int TEST_RUNS = 10;
     private static int GROUPS = 25;
     private static int ROWS = 200;
 
     @Test
-    public void testAdd()
+    public void testMass()
     {
 
         long t = System.currentTimeMillis();
@@ -46,7 +46,6 @@ public class MathrixMassTest
 
         }
         System.out.println("fertig " + mat.getSize());
-        System.out.println(mat);
         System.out.println("T: " + (System.currentTimeMillis() - t) / TEST_RUNS);
 
     }
