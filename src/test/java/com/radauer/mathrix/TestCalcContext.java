@@ -7,7 +7,7 @@ import com.radauer.mathrix.types.GroupKeyFactoryImpl;
 import com.radauer.mathrix.types.RowTypeFactory;
 import com.radauer.mathrix.types.RowTypeFactoryImpl;
 
-public class TestCalcContext implements CalculationContext
+public class TestCalcContext extends CalculationContext
 {
 
     private RoundingFactory roundingFactory = new RoundingFactoryImpl();
