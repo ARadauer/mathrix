@@ -3,6 +3,7 @@ package com.radauer.mathrix;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.Set;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
@@ -40,6 +41,30 @@ public class Mathrix implements Serializable
 
     }
 
+    public void multiply(GroupKey targetGroup, RowKey targetRow, BigDecimal value1, BigDecimal value2)
+    {
+        BigDecimal result = null;
+        if (value1 == null && value2 == null)
+        {
+            result = null;
+        }
+        else if (value1 == null)
+        {
+            result = value2;
+        }
+        else if (value2 == null)
+        {
+            result = value1;
+        }
+        else
+        {
+            result = value1.multiply(value2);
+        }
+
+        insert(new Position(targetGroup, targetRow, result));
+
+    }
+
     public void insert(Position position)
     {
 
@@ -71,6 +96,16 @@ public class Mathrix implements Serializable
     public Map<GroupKey, Position> getRow(RowKey rowKey)
     {
         return table.row(rowKey);
+    }
+
+    public Set<RowKey> getRowKeys()
+    {
+        return table.rowKeySet();
+    }
+
+    public Set<GroupKey> getGroupKeys()
+    {
+        return table.columnKeySet();
     }
 
     public CalculationContext getCalcContext()

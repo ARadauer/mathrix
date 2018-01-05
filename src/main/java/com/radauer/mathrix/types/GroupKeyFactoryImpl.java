@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.radauer.mathrix.GroupKey;
+import com.radauer.mathrix.GroupType;
 
 /**
  * Default implementation of a {@link GroupKeyFactory} based on Strings
@@ -19,7 +20,17 @@ public class GroupKeyFactoryImpl implements GroupKeyFactory<String>
         GroupKey groupKey = groupKeyMap.get(specificGroupKey);
         if (groupKey == null)
         {
-            groupKey = new GroupKey(specificGroupKey);
+            GroupType groupType = GroupType.VALUE;
+            if (specificGroupKey.endsWith("FLAG"))
+            {
+                groupType = GroupType.FLAG;
+            }
+            else if (specificGroupKey.endsWith("%"))
+            {
+                groupType = GroupType.PERCENTAGE;
+            }
+
+            groupKey = new GroupKey(specificGroupKey, groupType);
             groupKeyMap.put(specificGroupKey, groupKey);
         }
         return groupKey;

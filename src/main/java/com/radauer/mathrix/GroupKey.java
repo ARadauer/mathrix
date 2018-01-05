@@ -8,15 +8,29 @@ import java.io.Serializable;
 public class GroupKey implements Serializable
 {
     private final String groupKeyCode;
+    private final GroupType groupType;
 
+    public GroupKey(String groupKeyCode, GroupType groupType)
+    {
+
+        this.groupKeyCode = groupKeyCode;
+        this.groupType = groupType;
+    }
     public GroupKey(String groupKeyCode)
     {
         this.groupKeyCode = groupKeyCode;
+        this.groupType = GroupType.VALUE;
+
     }
 
     public String getGroupKeyCode()
     {
         return groupKeyCode;
+    }
+
+    public GroupType getGroupType()
+    {
+        return groupType;
     }
 
     @Override

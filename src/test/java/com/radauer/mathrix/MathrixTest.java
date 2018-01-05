@@ -6,10 +6,12 @@ import static com.radauer.mathrix.MathrixTestHelper.getGroupKeys;
 import static com.radauer.mathrix.MathrixTestHelper.getRowKey;
 import static com.radauer.mathrix.MathrixTestHelper.getRowTypes;
 import static com.radauer.mathrix.MathrixTestHelper.testValue;
+import static com.radauer.mathrix.MathrixTestHelper.testValueEmpty;
 
 import org.junit.Test;
 
 import com.radauer.mathrix.tasks.CopyTask;
+import com.radauer.mathrix.tasks.MultiTask;
 import com.radauer.mathrix.tasks.SumTask;
 import com.radauer.mathrix.tasks.TaskList;
 
@@ -107,6 +109,67 @@ public class MathrixTest
         mat.insert(createPosition("EK", "Option", "100.125"));
         testValue("EK", "Model", "100.12", mat);
         testValue("EK", "Option", "100.13", mat);
+    }
+
+    @Test
+    public void testMultiplyUseOneValue()
+    {
+
+        mat = new Mathrix(new TestCalcContext());
+        mat.insert(createPosition("EK", "Model", "100"));
+        mat.insert(createPosition("EK", "Color", "10"));
+        mat.insert(createPosition("EK", "Option", "5"));
+
+        mat.insert(createPosition("COUNT", "Model", "2"));
+        mat.insert(createPosition("COUNT", "Color", "3"));
+
+        MultiTask multiTask = new MultiTask(getGroupKey("EK"), getGroupKey("COUNT"),
+            getRowTypes("Model", "Color", "Option"), getGroupKey("TOTAL"));
+
+        multiTask.calc(mat);
+
+        testValue("TOTAL", "Model", "200", mat);
+        testValue("TOTAL", "Color", "30", mat);
+        testValue("TOTAL", "Option", "5", mat);
+    }
+
+    @Test
+    public void testMultiplyDontUseOneValue()
+    {
+        mat = new Mathrix(new TestCalcContext());
+        mat.insert(createPosition("EK", "Model", "100"));
+        mat.insert(createPosition("EK", "Color", "10"));
+        mat.insert(createPosition("EK", "Option", "5"));
+
+        mat.insert(createPosition("VAT", "Model", "0.2"));
+        mat.insert(createPosition("VAT", "Color", "0.2"));
+
+        MultiTask multiTask = new MultiTask(getGroupKey("EK"), getGroupKey("VAT"),
+            getRowTypes("Model", "Color", "Option"), getGroupKey("TOTAL"), false);
+
+        multiTask.calc(mat);
+
+        testValue("TOTAL", "Model", "20", mat);
+        testValue("TOTAL", "Color", "2", mat);
+        testValueEmpty("TOTAL", "Option", mat);
+    }
+
+    @Test
+    public void testMultiAndRound()
+    {
+        mat = new Mathrix(new TestCalcContext());
+        mat.insert(createPosition("EK", "Model", "5"));
+
+        mat.insert(createPosition("NOVA%", "Model", "0.123"));
+
+        MultiTask multiTask = new MultiTask(getGroupKey("EK"), getGroupKey("NOVA%"),
+            getRowTypes("Model", "Color"), getGroupKey("TOTAL"), false);
+
+        testValue("NOVA%", "Model", "0.123", mat); //Group ends with % has different rounding
+
+        multiTask.calc(mat);
+
+        testValue("TOTAL", "Model", "0.62", mat);
     }
 
     private void createMathrix()

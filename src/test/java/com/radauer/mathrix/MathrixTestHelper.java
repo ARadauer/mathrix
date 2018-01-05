@@ -1,5 +1,6 @@
 package com.radauer.mathrix;
 
+import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -34,6 +35,17 @@ public class MathrixTestHelper
         assertNotNull(pos);
         assertTrue(pos.getValue().compareTo(new BigDecimal(valueString)) == 0);
     }
+
+    public static void testValueEmpty(String groupCode, String rowKeyTypeCode, Mathrix mat)
+    {
+        RowType rowType = getRowType(rowKeyTypeCode);
+        RowKey rowKey = new RowKey(rowType, "");
+        Position pos = mat.getPosition(getGroupKey(groupCode), rowKey);
+        BigDecimal value = pos == null ? null : pos.getValue();
+        assertNull(value);
+
+    }
+
 
     public static RowType getRowType(String rowKeyTypeCode)
     {
