@@ -98,9 +98,20 @@ public class MathrixTest
         testValue("VK", "SUM", "139", mat);
     }
 
+    @Test
+    public void testInsertRouding()
+    {
+
+        mat = new Mathrix(new TestCalcContext());
+        mat.insert(createPosition("EK", "Model", "100.123"));
+        mat.insert(createPosition("EK", "Option", "100.125"));
+        testValue("EK", "Model", "100.12", mat);
+        testValue("EK", "Option", "100.13", mat);
+    }
+
     private void createMathrix()
     {
-        mat = new Mathrix();
+        mat = new Mathrix(new TestCalcContext());
         mat.insert(createPosition("EK", "Model", "100"));
         mat.insert(createPosition("EK", "Color", "10"));
         mat.insert(createPosition("EK", "Option", "5"));

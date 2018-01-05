@@ -12,7 +12,8 @@ import com.radauer.mathrix.tasks.SumTask;
 /**
  * Performance Test for the Mathrix
  */
-public class MathrixMassTest {
+public class MathrixMassTest
+{
 
     private Mathrix mat;
 
@@ -20,15 +21,15 @@ public class MathrixMassTest {
     private static int GROUPS = 25;
     private static int ROWS = 200;
 
-
     @Test
-    public void testAdd() {
+    public void testAdd()
+    {
 
         long t = System.currentTimeMillis();
         System.out.println("start");
         for (int i = 0; i < TEST_RUNS; i++)
         {
-            mat = new Mathrix();
+            mat = new Mathrix(new TestCalcContext());
             for (int group = 0; group < GROUPS; group++)
             {
                 for (int row = 0; row < ROWS; row++)
@@ -43,13 +44,11 @@ public class MathrixMassTest {
                 new SumTask(getGroupKey("G" + group), null, getRowKey("SUM")).calc(mat);
             }
 
-
         }
-        System.out.println("fertig "+mat.getSize());
+        System.out.println("fertig " + mat.getSize());
         System.out.println(mat);
         System.out.println("T: " + (System.currentTimeMillis() - t) / TEST_RUNS);
 
     }
-
 
 }

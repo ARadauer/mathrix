@@ -5,6 +5,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 
+import com.radauer.mathrix.types.GroupKeyFactory;
+import com.radauer.mathrix.types.GroupKeyFactoryImpl;
+import com.radauer.mathrix.types.RowTypeFactory;
+import com.radauer.mathrix.types.RowTypeFactoryImpl;
+
 /**
  * Utitility Methos for helping test the Mathrix
  */

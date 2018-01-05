@@ -5,7 +5,8 @@ import com.radauer.mathrix.Mathrix;
 /**
  * Interface for calculation Tasks
  */
-public interface Task {
+public interface Task
+{
 
     void calc(Mathrix mathrix);
 }

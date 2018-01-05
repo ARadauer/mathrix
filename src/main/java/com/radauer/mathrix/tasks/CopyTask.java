@@ -37,7 +37,10 @@ public class CopyTask implements Task
             group.values().stream()
                 .filter(p -> ArrayUtils.contains(sourceRowType, p.getRowKey().getRowType()))
                 .filter(p -> p.getValue() != null)
-                .forEach((Position p) -> mathrix.add(targetGroupKey, p.getRowKey(), p.getValue()));
+                .forEach((Position p) -> {
+                    mathrix.add(targetGroupKey, p.getRowKey(), p.getValue());
+
+                });
         }
 
     }

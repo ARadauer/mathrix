@@ -1,9 +1,11 @@
 package com.radauer.mathrix;
 
+import java.io.Serializable;
+
 /**
  * Defines the Key of a Group or Column
  */
-public class GroupKey
+public class GroupKey implements Serializable
 {
     private final String groupKeyCode;
 

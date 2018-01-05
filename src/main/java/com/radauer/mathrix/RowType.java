@@ -1,9 +1,11 @@
 package com.radauer.mathrix;
 
+import java.io.Serializable;
+
 /**
  * Type of a Row Key, allows to build Tasks to sum up Rows of specific Types
  */
-public class RowType
+public class RowType implements Serializable
 {
 
     private boolean isSum;

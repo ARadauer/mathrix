@@ -1,20 +1,27 @@
 package com.radauer.mathrix;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Map;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import com.radauer.mathrix.rounding.BusinessRounding;
 
 /**
- * Implemantaiton of the Calculation Matrix
+ * Implementation of the Calculation Matrix
  * Allows to insert Positions and add Positions to each other
- *
  */
-public class Mathrix
+public class Mathrix implements Serializable
 {
-
     private Table<RowKey, GroupKey, Position> table = HashBasedTable.create();
+
+    private CalculationContext calcContext;
+
+    public Mathrix(CalculationContext calcContext)
+    {
+        this.calcContext = calcContext;
+    }
 
     public void add(GroupKey groupKey, RowKey rowKey, BigDecimal value)
     {
@@ -23,9 +30,14 @@ public class Mathrix
         {
             position = new Position(groupKey, rowKey, value);
             insert(position);
-            return;
         }
-        position.addValue(value);
+        else
+        {
+            position.addValue(value);
+
+        }
+        round(position);
+
     }
 
     public void insert(Position position)
@@ -36,6 +48,14 @@ public class Mathrix
             throw new IllegalArgumentException(position + " allready exists");
         }
         table.put(position.getRowKey(), position.getGroupKey(), position);
+        round(position);
+    }
+
+    private void round(Position position)
+    {
+        BusinessRounding rounding =
+            calcContext.getRoundingFactory().getRounding(position.getRowKey(), position.getGroupKey());
+        position.setValue(rounding.round(position.getValue()));
     }
 
     public Position getPosition(GroupKey groupKey, RowKey rowKey)
@@ -51,6 +71,11 @@ public class Mathrix
     public Map<GroupKey, Position> getRow(RowKey rowKey)
     {
         return table.row(rowKey);
+    }
+
+    public CalculationContext getCalcContext()
+    {
+        return calcContext;
     }
 
     @Override

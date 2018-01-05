@@ -1,7 +1,9 @@
-package com.radauer.mathrix;
+package com.radauer.mathrix.types;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.radauer.mathrix.RowType;
 
 /**
  * Default implementation fo the RowTypeFactory for Strings
