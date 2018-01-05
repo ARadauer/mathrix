@@ -1,12 +1,12 @@
 package com.radauer.mathrix;
 
-import java.math.BigDecimal;
-
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigDecimal;
+
 /**
- * Created by Andreas on 03.01.2018.
+ * Utitility Methos for helping test the Mathrix
  */
 public class MathrixTestHelper {
 

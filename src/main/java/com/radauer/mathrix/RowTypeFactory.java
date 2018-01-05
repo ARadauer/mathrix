@@ -1,7 +1,7 @@
 package com.radauer.mathrix;
 
 /**
- * Created by Andreas on 03.01.2018.
+ * Allows an API user to implement a Factory for RowTypes based on its own row types
  */
 public interface RowTypeFactory<T> {
 

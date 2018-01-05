@@ -1,26 +1,26 @@
 package com.radauer.mathrix;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
+
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 
 /**
- * Created by Andreas on 03.01.2018.
+ * Implemantaiton of the Calculation Matrix
+ * Allows to insert Positions and add Positions to each other
+ *
  */
-public class Mathrix {
+public class Mathrix
+{
 
+    private Table<RowKey, GroupKey, Position> table = HashBasedTable.create();
 
-    private int size = 0;
-    private Map<RowKey, Row> rows = new HashMap<>();
-    private Map<GroupKey, Group> groups = new HashMap<>();
-    private Set<GroupKey> groupKeys = new LinkedHashSet<>();
-    private Set<RowKey> rowKeys = new LinkedHashSet<>();
-
-    public void add(GroupKey groupKey, RowKey rowKey, BigDecimal value) {
+    public void add(GroupKey groupKey, RowKey rowKey, BigDecimal value)
+    {
         Position position = getPosition(groupKey, rowKey);
-        if (position == null) {
+        if (position == null)
+        {
             position = new Position(groupKey, rowKey, value);
             insert(position);
             return;
@@ -28,52 +28,49 @@ public class Mathrix {
         position.addValue(value);
     }
 
-    public void insert(Position position) {
-        Row row = rows.get(position.getRowKey());
-        if (row == null) {
-            row = new Row(position.getRowKey());
-            rows.put(row.getRowKey(), row);
-            rowKeys.add(row.getRowKey());
-        }
-        row.insert(position);
+    public void insert(Position position)
+    {
 
-        Group group = groups.get(position.getGroupKey());
-        if (group == null) {
-            group = new Group(position.getGroupKey());
-            groupKeys.add(position.getGroupKey());
-            groups.put(group.getGroupKey(), group);
+        if (table.contains(position.getRowKey(), position.getGroupKey()))
+        {
+            throw new IllegalArgumentException(position + " allready exists");
         }
-        group.insert(position);
-        size++;
+        table.put(position.getRowKey(), position.getGroupKey(), position);
     }
 
-    public Position getPosition(GroupKey groupKey, RowKey rowKey) {
-        Row row = rows.get(rowKey);
-        if (row == null) {
-            return null;
-        }
-        return row.getPosition(groupKey);
+    public Position getPosition(GroupKey groupKey, RowKey rowKey)
+    {
+        return table.get(rowKey, groupKey);
     }
 
-    public Group getGroup(GroupKey groupKey) {
-        return groups.get(groupKey);
+    public Map<RowKey, Position> getGroup(GroupKey groupKey)
+    {
+        return table.column(groupKey);
+    }
+
+    public Map<GroupKey, Position> getRow(RowKey rowKey)
+    {
+        return table.row(rowKey);
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
 
         StringBuilder buf = new StringBuilder();
         buf.append(String.format(SEP, ""));
 
-        for (GroupKey groupKey : groupKeys) {
+        for (GroupKey groupKey : table.columnKeySet())
+        {
             buf.append(String.format(SEP, groupKey));
         }
         buf.append("\n");
-        for (RowKey rowKey : rowKeys) {
-            Row row = rows.get(rowKey);
-            buf.append(String.format(SEP, row.getRowKey()));
-            for (GroupKey groupKey : groupKeys) {
-                Position position = row.getPosition(groupKey);
+        for (RowKey rowKey : table.rowKeySet())
+        {
+            buf.append(String.format(SEP, rowKey));
+            for (GroupKey groupKey : table.columnKeySet())
+            {
+                Position position = table.get(rowKey, groupKey);
                 buf.append(String.format(SEP, position == null ? "- " : position));
             }
             buf.append("\n");
@@ -81,11 +78,10 @@ public class Mathrix {
         return buf.toString();
     }
 
-
-    public int getSize() {
-        return size;
+    public int getSize()
+    {
+        return table.size();
     }
-
 
     private static String SEP = "%10s";
 }

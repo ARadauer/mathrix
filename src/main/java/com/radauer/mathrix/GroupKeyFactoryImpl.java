@@ -4,17 +4,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Andreas on 03.01.2018.
+ * Default implementation of a {@link GroupKeyFactory} based on Strings
  */
-public class GroupKeyFactoryImpl implements GroupKeyFactory<String> {
+public class GroupKeyFactoryImpl implements GroupKeyFactory<String>
+{
 
     private Map<String, GroupKey> groupKeyMap = new HashMap<>();
 
-
     @Override
-    public GroupKey getGroupKey(String specificGroupKey) {
+    public GroupKey getGroupKey(String specificGroupKey)
+    {
         GroupKey groupKey = groupKeyMap.get(specificGroupKey);
-        if (groupKey == null) {
+        if (groupKey == null)
+        {
             groupKey = new GroupKey(specificGroupKey);
             groupKeyMap.put(specificGroupKey, groupKey);
         }

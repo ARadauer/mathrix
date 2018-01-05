@@ -1,7 +1,8 @@
 package com.radauer.mathrix;
 
 /**
- * Created by Andreas on 03.01.2018.
+ * Defines the Key of a Row
+ * e.g.  Article with Code C123
  */
 public class RowKey {
 

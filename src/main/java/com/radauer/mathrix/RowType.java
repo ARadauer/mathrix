@@ -1,21 +1,26 @@
 package com.radauer.mathrix;
 
 /**
- * Created by Andreas on 03.01.2018.
+ * Type of a Row Key, allows to build Tasks to sum up Rows of specific Types
  */
-public class RowType {
+public class RowType
+{
 
     private boolean isSum;
     private String rowTypeKey;
 
-    public RowType(String rowTypeKey) {
+    public RowType(String rowTypeKey)
+    {
         this.rowTypeKey = rowTypeKey;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o)
+    {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         RowType rowType = (RowType) o;
 
@@ -23,12 +28,14 @@ public class RowType {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return rowTypeKey != null ? rowTypeKey.hashCode() : 0;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return rowTypeKey;
     }
 }

@@ -1,36 +1,55 @@
 package com.radauer.mathrix;
 
+import static com.radauer.mathrix.MathrixTestHelper.getGroupKey;
+import static com.radauer.mathrix.MathrixTestHelper.getRowKey;
+
+import java.math.BigDecimal;
+
+import org.junit.Test;
+
+import com.radauer.mathrix.tasks.SumTask;
+
 /**
- * Created by Andreas on 03.01.2018.
+ * Performance Test for the Mathrix
  */
 public class MathrixMassTest {
 
-   /* private Mathrix mat;
+    private Mathrix mat;
+
+    private static int TEST_RUNS = 1000;
+    private static int GROUPS = 25;
+    private static int ROWS = 200;
+
 
     @Test
     public void testAdd() {
-        Mathrix mat = new Mathrix();
+
+        long t = System.currentTimeMillis();
         System.out.println("start");
-        for (int group = 0; group < 1000; group++) {
-            for (int row = 0; row < 1000; row++) {
-                mat.insert(new Position("G" + group, "R" + row, new BigDecimal(group * row)));
+        for (int i = 0; i < TEST_RUNS; i++)
+        {
+            mat = new Mathrix();
+            for (int group = 0; group < GROUPS; group++)
+            {
+                for (int row = 0; row < ROWS; row++)
+                {
+                    mat.insert(
+                        new Position(getGroupKey("G" + group), getRowKey("R" + row), new BigDecimal(group * row)));
 
+                }
             }
-        }
-        System.out.println("fertig "+mat.getSize());
-        for (int group = 0; group < 1000; group++) {
-            new SumTask("G" + group, null, "SUM").calc(mat);
-        }
-        System.out.println("fertig "+mat.getSize());
+            for (int group = 0; group < GROUPS; group++)
+            {
+                new SumTask(getGroupKey("G" + group), null, getRowKey("SUM")).calc(mat);
+            }
 
-        //System.out.println(mat);
+
+        }
+        System.out.println("fertig "+mat.getSize());
+        System.out.println(mat);
+        System.out.println("T: " + (System.currentTimeMillis() - t) / TEST_RUNS);
+
     }
 
 
-    private void testValue(String groupCode, RowKey rowKey, String valueString) {
-        Position pos = mat.getPosition(groupCode, rowCode);
-        assertNotNull(pos);
-        assertTrue(pos.getValue().compareTo(new BigDecimal(valueString)) == 0);
-    }
-*/
 }
