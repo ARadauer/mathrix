@@ -1,11 +1,11 @@
 package com.radauer.mathrix;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.radauer.mathrix.rounding.RoundingFactory;
 import com.radauer.mathrix.types.GroupKeyFactory;
 import com.radauer.mathrix.types.RowTypeFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class CalculationContext
 {
@@ -27,6 +27,15 @@ public abstract class CalculationContext
             }
         }
         return null;
+    }
+
+    public <T> T getCriteriaOrFail(Class<T> criteriaClass) {
+        T crit = getCriteria(criteriaClass);
+        if (crit == null) {
+            throw new IllegalArgumentException(
+                    "Calculation Criteria for " + criteriaClass + " does not exist in context");
+        }
+        return crit;
     }
 
     public CalculationContext addCriteria(Object criteria)

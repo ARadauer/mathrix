@@ -1,13 +1,13 @@
 package com.radauer.mathrix;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
+import com.radauer.mathrix.rounding.BusinessRounding;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Set;
-
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
-import com.radauer.mathrix.rounding.BusinessRounding;
 
 /**
  * Implementation of the Calculation Matrix
@@ -143,5 +143,5 @@ public class Mathrix implements Serializable
         return table.size();
     }
 
-    private static String SEP = "%10s";
+    private static String SEP = "%15s";
 }
