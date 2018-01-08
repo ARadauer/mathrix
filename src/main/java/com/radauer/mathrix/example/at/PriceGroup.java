@@ -15,8 +15,8 @@ public enum PriceGroup {
 
     NOVA_PERCENTAGE(GroupType.PERCENTAGE),
     NOVA_AMOUNT(GroupType.VALUE),
-    TAX_PERCENTAGE(GroupType.PERCENTAGE),
-    TAX_AMOUNT(GroupType.VALUE),
+    VAT_PERCENTAGE(GroupType.PERCENTAGE),
+    VAT_AMOUNT(GroupType.VALUE),
 
     LIST_NOVA_AMOUNT(GroupType.VALUE),
     LIST_TAX_AMOUNT(GroupType.VALUE),

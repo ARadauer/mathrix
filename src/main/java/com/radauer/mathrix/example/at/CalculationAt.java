@@ -21,9 +21,11 @@ public class CalculationAt {
     private static RowType model = getArticleType(ArticleType.MODEL);
     private static RowType color = getArticleType(ArticleType.COLOR);
     private static RowType option = getArticleType(ArticleType.MODEL);
-    private static RowType[] SPEC_TYPES = new RowType[]{model, color, option};
+
 
     private static RowType specialTax = getArticleType(ArticleType.SPECIAL_TAX);
+    private static RowType[] SPEC_TYPES = new RowType[]{model, color, option};
+    private static RowType[] ALL_PARTS = new RowType[]{model, color, option, specialTax};
     private static RowType total = getArticleType(ArticleType.TOTAL);
 
     private static GroupKey LIST = getPriceGroup(PriceGroup.LIST);
@@ -34,6 +36,12 @@ public class CalculationAt {
 
     private static GroupKey NOVA_PERCENTAGE = getPriceGroup(PriceGroup.NOVA_PERCENTAGE);
     private static GroupKey NOVA_AMOUNT = getPriceGroup(PriceGroup.NOVA_AMOUNT);
+
+    private static GroupKey VAT_PERCENTAGE = getPriceGroup(PriceGroup.VAT_PERCENTAGE);
+    private static GroupKey VAT_AMOUNT = getPriceGroup(PriceGroup.VAT_AMOUNT);
+
+    private static GroupKey VK_NET_INKL_NOVA = getPriceGroup(PriceGroup.VK_NET_INKL_NOVA);
+    private static GroupKey VK_GROSS = getPriceGroup(PriceGroup.VK_GROSS);
 
 
     public static void main(String[] args) {
@@ -61,6 +69,20 @@ public class CalculationAt {
         taskList.addTask(new ValueSetterTask(VK, SPEC_TYPES, NOVA_PERCENTAGE,
                 (position, mat) -> new BigDecimal("0.08")));
         taskList.addTask(new MultiTask(VK, NOVA_PERCENTAGE, SPEC_TYPES, NOVA_AMOUNT));
+        taskList.addTask(mathrix -> mathrix.add(NOVA_AMOUNT, new RowKey(specialTax, "NOVA Abschlag"), new BigDecimal("-300")));
+
+
+        taskList.addTask(new ValueSetterTask(VK, SPEC_TYPES, VAT_PERCENTAGE,
+                (position, mat) -> new BigDecimal("0.20")));
+        taskList.addTask(new MultiTask(VK, VAT_PERCENTAGE, SPEC_TYPES, VAT_AMOUNT));
+        taskList.addTask(createSumTask(VAT_AMOUNT));
+
+
+        taskList.addTask(new CopyTask(new GroupKey[]{VK, NOVA_AMOUNT}, ALL_PARTS, VK_NET_INKL_NOVA));
+        taskList.addTask(createSumTask(VK_NET_INKL_NOVA));
+
+        taskList.addTask(new CopyTask(new GroupKey[]{VK, NOVA_AMOUNT, VAT_AMOUNT}, ALL_PARTS, VK_GROSS));
+        taskList.addTask(createSumTask(VK_GROSS));
 
 
         return taskList;
